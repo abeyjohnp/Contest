@@ -88,7 +88,7 @@ fs.readFile("message.txt","utf-8",function(err,data){
     fs.readFile("uppercase.txt","utf-8",function(err,data){
         let read2 = data;
         fs.writeFile("summary.txt",JSON.stringify(read2.length),function(err,data){
-            
+            console.log(err);
         })
     })
     
