@@ -1,0 +1,3 @@
+Highest : 75
+Average : 70
+Lowest : 45
