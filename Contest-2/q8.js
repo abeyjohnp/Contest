@@ -2,8 +2,9 @@ const fs = require ("fs")
 
 let contents = fs.readFile("a.txt","utf-8",(err,data) => {
     
-    data = data.trim()
+    //data = data.trim()
     let newdata = data.split("\r\n")
+    //console.log(newdata)
     obj = {}
     obj["lines"] = newdata.length
     let words = 0;
@@ -14,7 +15,7 @@ let contents = fs.readFile("a.txt","utf-8",(err,data) => {
         {
             //if (newdata[i][j] != " "){
                 char+=1
-            //}
+            
         }
         words += (newdata[i].split(" ")).length
         
