@@ -80,18 +80,41 @@ const fs = require("fs")
 //4. Sequential File Processor
 
 
-fs.readFile("message.txt","utf-8",function(err,data){
-    upper = data.toUpperCase()
-    //console.log(upper)
-    fs.writeFile("uppercase.txt",upper,function(err,data){
-        fs.readFile("uppercase.txt","utf-8",function(err,data){            
-            let words = "Total Words : " + data.split(" ").length
+    // fs.readFile("message.txt","utf-8",function(err,data){
+    //     upper = data.toUpperCase()
+    //     //console.log(upper)
+    //     fs.writeFile("uppercase.txt",upper,function(err,data){
+    //         fs.readFile("uppercase.txt","utf-8",function(err,data){            
+    //             let words = "Total Words : " + data.split(" ").length
 
-            fs.writeFile("summary.txt",words,function(err,data){
-                console.log(err);
-            })
-        })
-    })    
-})
+    //             fs.writeFile("summary.txt",words,function(err,data){
+    //                 console.log(err);
+    //             })
+    //         })
+    //     })    
+    // })
+
+//Q5. User Report Generator
+
+    //output :
+    // Ram - 85
+    // Shyam - 72
+    // Geeta - 91
 
 
+    // fs.readFile("students.json","utf-8",(err,data) =>{
+    //     objs1 = JSON.parse(data)
+    //     fs.readFile("marks2.json","utf-8",(err,data)=>{
+    //         objs2= JSON.parse(data)
+    //         txt = ""
+    //         for (let i=0 ; i<objs2.length ; i++)
+    //         {
+    //             if ((objs2[i].id) === (objs1[i].id))
+    //             {
+    //                 txt += [objs1[i].name]+" - "+objs2[i].marks+"\n"
+                    
+    //             }
+    //         }
+    //         fs.writeFile("report.txt",txt,()=>{})
+    //     })
+    // })
