@@ -82,16 +82,16 @@ const fs = require("fs")
 
 fs.readFile("message.txt","utf-8",function(err,data){
     upper = data.toUpperCase()
-    console.log(upper)
+    //console.log(upper)
     fs.writeFile("uppercase.txt",upper,function(err,data){
-    })
-    fs.readFile("uppercase.txt","utf-8",function(err,data){
-        let read2 = data;
-        fs.writeFile("summary.txt",JSON.stringify(read2.length),function(err,data){
-            console.log(err);
+        fs.readFile("uppercase.txt","utf-8",function(err,data){            
+            let words = "Total Words : " + data.split(" ").length
+
+            fs.writeFile("summary.txt",words,function(err,data){
+                console.log(err);
+            })
         })
-    })
-    
+    })    
 })
 
 
