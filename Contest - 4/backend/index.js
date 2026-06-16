@@ -1,8 +1,10 @@
 const express = require("express");
 const {z} = require("zod");
 const app = express ();
-const port = 3000;
+
 app.use(express.json())
+const cors = require('cors');
+app.use(cors()); 
 
 const todos = []
 let counter =1 
@@ -12,7 +14,6 @@ const todoCreateSchema = z.object({
 
 app.get("/todos/:id",(req,res) => {
     let index= (req.params.id)-1
-
     res.json({
         sucess : true,
         data : todos[index]
@@ -55,9 +56,9 @@ app.post("/todos",(req,res) => {
 })
 
 app.put("/todos/:id",(req,res) => {
-    const todoid = req.params.id
-    const index = todoid - 1
-    let todo = todos[index]
+    const todoid = parseInt(req.params.id)
+    let todo = todos.find(t=> t.id === todoid)
+    
     todo.isComplete = true
     res.status(200).json({
         success :true,
@@ -68,18 +69,22 @@ app.put("/todos/:id",(req,res) => {
 
 })
 
+
 app.delete("/todos/:id",(req,res) =>{
-    let index = (req.params.id)-1;
+    let todoid = parseInt(req.params.id)
+    let index = todos.findIndex(t => t.id === todoid)
+    
     // res.json({
     //     "Deleted ":index
     // })
-    todos.splice(index,1)
-    res.json({
-        data : todos
+    let deletedcontent = todos.splice(index,1)[0]
+    res.status(200).json({
+        data : todos,
+        deleted : deletedcontent
     })
 })
 
-app.listen(3000 ,() =>
+app.listen(3005 ,() =>
 {
     console.log("listening!")
 })

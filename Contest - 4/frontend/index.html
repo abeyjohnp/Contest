@@ -1,14 +1,116 @@
 <html>
     <head>
-        <style rel = "stylesheet" href = "index.css"></style>
+        <link rel = "stylesheet" href = "index.css">
     </head>
     <script>
-        function addToDo(){
+        async function addToDo(){
             
+            const inputElement = document.getElementById("todo-input")
+            const taskText = inputElement.value
+            try
+            {
+                const response = await fetch("http://localhost:3005/todos",
+                    {
+                        method : "POST",
+                        headers : {
+                            "Content-Type" : "application/json"
+                        },
+                        body: JSON.stringify({
+                            task : taskText
+                        })
+                    }
+                )
+
+                const result = await response.json()
+                console.log("SERVER RESPONSE ", result)
+                if  (result.sucess){
+                    const container = document.getElementById("todo-container");
+                    const todoRow = document.createElement("div")
+                    todoRow.id = "todo-"+ result.data.id
+                    todoRow.style.display = "flex"
+                    todoRow.style.gap = "10px"
+                    todoRow.style.margin = "10px 0"
+                    const taskSpan = document.createElement("span")
+                    taskSpan.innerText = result.data.task
+                    todoRow.append(taskSpan)
+                    const completeBtn = document.createElement("button");
+                    completeBtn.innerText = "Done"
+                    completeBtn.onclick = () => completeToDo(result.data.id)
+                    todoRow.appendChild(completeBtn)
+                    
+                    const deleteBtn = document.createElement("button")
+                    deleteBtn.innerText = "Delete"
+                    deleteBtn.onclick = () => deleteToDo(result.data.id)
+                    todoRow.appendChild(deleteBtn)
+
+                    container.appendChild(todoRow)
+                }
+                    
+                document.getElementById("todo-input").value = ""
+            }
+            catch(error)
+            {
+                console.log("ERROR : ",error)
+            }
         }
+        async function completeToDo(id)
+        {
+            try
+            {
+                const response = await fetch (`http://localhost:3005/todos/${id}`,{
+                    method : "PUT",
+                })
+                const result = await response.json()
+                console.log("COMPLETE TODO RESPONSE : ", result);
+                if (response.ok)
+                {
+                    const todoRow = document.getElementById("todo-"+id);
+                    if (todoRow){
+                        const taskSpan = todoRow.querySelector("span");
+                        taskSpan.style.textDecoration = "line-through";
+                        taskSpan.style.color = "grey";
+                    }
+
+                    const doneBtn = todoRow.querySelector("button");
+                    if (doneBtn)
+                    {
+                        doneBtn.remove();
+                    }
+                }
+            }
+            catch(error)
+            {
+                console.log(error)
+            }
+        }
+        async function deleteToDo(id)
+        {
+            try
+            {
+                const response = await fetch (`http://localhost:3005/todos/${id}`,{
+                    method : "DELETE"
+                })
+                const result = response.json()
+                console.log("TODO DELETE RESPONSE : ",result);
+                if (response.ok)
+                {
+                    const todoRow =  document.getElementById("todo-"+ id);
+                    if (todoRow){
+                        todoRow.remove();
+                    }
+                }
+            }
+            catch(error)
+            {
+                console.log(error)
+            }
+        }
+        
     </script>
     <body>
-        <input placeholder="Enter a task : "/>
+        <h1>TO-DO-APP</h1>
+        <input id="todo-input" placeholder="Enter a task : "/>
         <button onclick = addToDo()>Enter</button>
+        <div id="todo-container"></div>
     </body>
 </html>
