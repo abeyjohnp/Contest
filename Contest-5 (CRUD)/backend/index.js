@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express()
-const {z, success} = require("zod")
+const {z} = require("zod")
 app.use(express.json())
 let cntr = 0
 const db = {
@@ -132,7 +132,25 @@ app.post("/signin",(req,res) =>{
 
     
 })
-
+app.get("/movies",(req,res)=>{
+    res.json({
+        movies : db.movies
+    })
+})
+app.get("/movies/:id",(req,res) => {
+    let movieId = parseInt(req.params.id)
+    let index = db.movies.findIndex(movie => (movie.id === movieId))
+    res.status(200).json({
+        movieData : db.movies.at(index)
+    })
+})
+app.get("/movies/:id/shows",(req,res) => {
+    let movieId = parseInt(req.params.id)
+    let index = db.movies.findIndex(movie => (movie.id === movieId))
+    res.status(200).json({
+        movieData : db.movies.at(index).shows
+    })
+})
 app.listen(3000,()=>{
     console.log("Server is listening on http://localhost:3000")
 })
