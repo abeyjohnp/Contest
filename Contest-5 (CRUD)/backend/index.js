@@ -120,15 +120,16 @@ app.post("/signin",(req,res) =>{
     let token = Math.random().toString()
     let username = req.body.username
     let password =  req.body.password
-
+    
     let index = db.users.findIndex(user => 
         (user.username === username && user.password === password))
-    
+    db.users[index].token = token
     res.status(200).json({
         success : true,
         message : "Signin successful",
         token : token
     })
+    console.log(db.users)
 
     
 })
@@ -150,6 +151,18 @@ app.get("/movies/:id/shows",(req,res) => {
     res.status(200).json({
         movieData : db.movies.at(index).shows
     })
+})
+app.post("/bookings/:userId",(req,res) => {
+    const movieId = req.body.movieId
+    const showId = req.body.showId
+    const seats = req.body.seats
+    
+    let movieIndex = db.movies.findIndex(m => m.id === movieId)
+    if (!db.movies[movieIndex])
+    {
+        console.log(JSON.stringify(moviedata))
+    }
+    
 })
 app.listen(3000,()=>{
     console.log("Server is listening on http://localhost:3000")
